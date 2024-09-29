@@ -26,7 +26,7 @@ const Login = () => {
                 localStorage.setItem('refreshToken', refreshToken);
 
                 if (role === 'Admin') {
-                    // navigate('/admin');
+                    navigate('/admin');
                     toast.success("Login successful");
                 } else {
                     toast.error("You are not authorized to access this page");
