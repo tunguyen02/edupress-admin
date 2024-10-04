@@ -7,7 +7,7 @@ const Auth = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="*" element={<Navigate to="/admin" />} />
+                <Route path="*" element={<Navigate to="/admin/dashboard" />} />
             </Routes>
         </BrowserRouter>
     )

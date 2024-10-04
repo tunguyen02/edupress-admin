@@ -5,20 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import avatar from '../assets/avatar.jpg';
 
 const HeaderComponent = () => {
-    // const user = useSelector(authSeletor);
-    // const dispatch = useDispatch();
 
     const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        localStorage.removeItem('accessToken');
+        navigate('/');
+    };
 
     const items = [
         {
             key: 'logout',
             label: 'Logout',
-            onClick: async () => {
-                // 
-                localStorage.removeItem('accessToken');
-                navigate('/');
-            },
+            onClick: handleLogout,
         },
     ];
 
@@ -26,7 +25,7 @@ const HeaderComponent = () => {
         <div className='p-2 row bg-white m-0'>
             <div className='col'>
                 <Input
-                    placeholder='Search product, supplier, order'
+                    placeholder='Search'
                     style={{ borderRadius: 100, width: '70%' }}
                     size='large'
                     prefix={<SearchNormal1 className='text-muted' size={20} />}

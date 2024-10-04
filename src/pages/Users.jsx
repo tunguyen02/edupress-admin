@@ -17,7 +17,7 @@ const Users = () => {
     }, [page, pageSize]);
 
     const getUsers = async () => {
-        const api = `http://localhost:8080/api/user?page=${page}&pageSize=${pageSize}`;
+        const api = `http://localhost:8080/api/user/getUser?page=${page}&pageSize=${pageSize}`;
         setIsLoading(true);
 
         try {

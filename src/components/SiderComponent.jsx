@@ -1,9 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { Box, Chart, Home2, ProfileCircle } from 'iconsax-react';
-import { FiHome } from 'react-icons/fi';
-import { CiViewList } from 'react-icons/ci';
+import { Home2, ProfileCircle } from 'iconsax-react';
 import { MdOutlineInventory } from 'react-icons/md';
 import { FaTags } from 'react-icons/fa';
 import logo from '../assets/logo.svg';
@@ -34,39 +32,14 @@ const SiderComponent = () => {
             ],
         },
         {
-            key: 'categories',
-            label: 'Categories',
+            key: 'register-course',
+            label: <Link to={'/admin/register-course'}>Register Course</Link>,
             icon: <FaTags size={20} className='text-muted' />,
-            children: [
-                {
-                    key: 'category-all',
-                    label: <Link to={'/admin/categories'}>All</Link>,
-                },
-                {
-                    key: 'add-course',
-                    label: <Link to={`/admin/categories/add-category`}>Add category</Link>,
-                },
-            ],
-        },
-        {
-            key: 'report',
-            label: <Link to={'/admin/report'}>Report</Link>,
-            icon: <Chart size={20} />,
         },
         {
             key: 'users',
             label: <Link to={'/admin/users'}>Users</Link>,
             icon: <ProfileCircle size={20} />,
-        },
-        {
-            key: 'orders',
-            label: <Link to={'/admin/orders'}>Orders</Link>,
-            icon: <Box size={20} />,
-        },
-        {
-            key: 'manage-store',
-            label: <Link to={'/admin/manage-store'}>Manage Store</Link>,
-            icon: <CiViewList size={20} />,
         },
     ];
 

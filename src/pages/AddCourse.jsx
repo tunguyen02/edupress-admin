@@ -1,4 +1,3 @@
-
 import { Form, Input, InputNumber, Button, message, Upload, Select, Row, Col, Image } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -8,26 +7,30 @@ import { useState } from 'react';
 const AddCourse = () => {
     const [form] = Form.useForm();
     const [imagePreview, setImagePreview] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const [uploading, setUploading] = useState(false);
     const navigate = useNavigate();
 
     const handleFinish = async (values) => {
+        const formData = new FormData();
+        formData.append('name', values.name);
+        formData.append('level', values.level);
+        formData.append('category', values.category);
+        formData.append('price', values.price);
+        formData.append('discountPrice', values.discountPrice);
+        formData.append('urlSlug', values.urlSlug);
+        formData.append('description', values.description);
+        formData.append('image', values.image.file);
+
         try {
             const token = localStorage.getItem('accessToken');
-            console.log("Access Token:", token);
-
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
             };
-
-            const courseData = {
-                ...values,
-                image: imagePreview,
-            };
-
-            await axios.post('http://localhost:8080/api/course/create', courseData, config);
+            await axios.post('http://localhost:8080/api/course/create', formData, config);
             message.success('Course created successfully!');
             navigate('/admin/course');
         } catch (error) {
@@ -36,9 +39,8 @@ const AddCourse = () => {
     };
 
 
-
     const handleImageUpload = (file) => {
-        form.setFieldsValue({ image: file });
+        setImageFile(file);
         setImagePreview(URL.createObjectURL(file));
         return false;
     };
@@ -97,7 +99,7 @@ const AddCourse = () => {
                             label="Discount"
                             name="discountPrice"
                         >
-                            <InputNumber min={0} max={100} />
+                            <InputNumber min={0} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -137,7 +139,7 @@ const AddCourse = () => {
                     <Input.TextArea rows={4} />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={uploading}>
                         Add Course
                     </Button>
                 </Form.Item>

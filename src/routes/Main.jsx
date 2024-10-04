@@ -9,7 +9,7 @@ import { routes } from './index'
 
 const Main = () => {
 
-    const { Content, Footer, Header, Sider } = Layout;
+    const { Content, Footer } = Layout;
 
     return (
         <BrowserRouter>

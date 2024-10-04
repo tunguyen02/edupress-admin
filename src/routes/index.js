@@ -1,12 +1,9 @@
 import Home from '../pages/Home'
-import Categories from '../pages/Categories'
-import AddCategory from '../pages/AddCategory'
 import Course from '../pages/Course'
-import ManageStore from '../pages/ManageStore'
-import Orders from '../pages/Orders'
-import Report from '../pages/Report'
 import AddCourse from '../pages/AddCourse'
 import Users from '../pages/Users'
+import RegisterCourse from '../pages/RegisterCourse'
+import EditCourse from '../pages/EditCourse'
 
 export const routes = [
     {
@@ -22,27 +19,15 @@ export const routes = [
         page: AddCourse,
     },
     {
-        path: '/admin/categories',
-        page: Categories,
-    },
-    {
-        path: '/admin/categories/add-category',
-        page: AddCategory,
-    },
-    {
-        path: '/admin/report',
-        page: Report,
-    },
-    {
-        path: '/admin/manage-store',
-        page: ManageStore,
-    },
-    {
-        path: '/admin/orders',
-        page: Orders,
+        path: '/admin/register-course',
+        page: RegisterCourse,
     },
     {
         path: '/admin/users',
         page: Users,
-    }
+    },
+    {
+        path: '/admin/course/edit/:courseId',
+        page: EditCourse
+    },
 ]

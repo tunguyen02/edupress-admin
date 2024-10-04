@@ -1,7 +1,8 @@
 import { Table, message, Empty, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'; // Import các icon
+import { useNavigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const Course = () => {
     const [courses, setCourses] = useState([]);
@@ -15,20 +16,20 @@ const Course = () => {
     }, [page, pageSize]);
 
     const getCourses = async () => {
-        const api = `http://localhost:8080/api/course/list?page=${page}&pageSize=${pageSize}`;
+        const api = `http://localhost:8080/api/course/get-courses?page=${page}&limit=${pageSize}`;
         setIsLoading(true);
 
         try {
             console.log("Fetching courses...");
             const res = await axios.get(api);
 
-            if (Array.isArray(res.data)) {
-                const items = res.data.map((item, index) => ({
+            if (res.data?.courses && typeof res.data.totalCourses === 'number') {
+                const items = res.data.courses.map((item, index) => ({
                     index: (page - 1) * pageSize + (index + 1),
                     ...item,
                 }));
                 setCourses(items);
-                setTotal(res.data.length);
+                setTotal(res.data.totalCourses);
             } else {
                 message.error('Data format is incorrect.');
                 setCourses([]);
@@ -39,10 +40,6 @@ const Course = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const handleEdit = (courseId) => {
-        console.log(`Editing course with ID: ${courseId}`);
     };
 
     const handleDelete = async (courseId) => {
@@ -56,13 +53,17 @@ const Course = () => {
         try {
             await axios.delete(`http://localhost:8080/api/course/delete/${courseId}`, config);
             message.success('Course deleted successfully!');
-            getCourses();
+            setCourses((prevCourses) => prevCourses.filter(course => course._id !== courseId));
         } catch (error) {
             message.error('Error deleting course: ' + (error.response?.data?.message || error.message));
         }
     };
 
+    const navigate = useNavigate();
 
+    const handleEdit = (courseId) => {
+        navigate(`/admin/course/edit/${courseId}`);
+    };
 
     return courses.length > 0 ? (
         <>
@@ -89,13 +90,16 @@ const Course = () => {
                         title: 'Image',
                         dataIndex: 'image',
                         key: 'image',
-                        render: (image) => (
-                            <img
-                                src={image}
-                                alt="Course"
-                                style={{ width: 50, height: 50, objectFit: 'cover' }}
-                            />
-                        ),
+                        render: (image) =>
+                            image ? (
+                                <img
+                                    src={image}
+                                    alt="Course"
+                                    style={{ width: 50, height: 50, objectFit: 'cover' }}
+                                />
+                            ) : (
+                                <span>No Image</span>
+                            ),
                     },
                     {
                         title: 'Course Title',
